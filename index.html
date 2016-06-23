@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Ng-apimock by mdasberg</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Ng-apimock</h1>
+      <h2 class="project-tagline">Node plugin that provides the ability to use scenario based api mocking:  for local development for protractor testing</h2>
+      <a href="https://github.com/mdasberg/ng-apimock" class="btn">View on GitHub</a>
+      <a href="https://github.com/mdasberg/ng-apimock/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/mdasberg/ng-apimock/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="ng-apimock-----" class="anchor" href="#ng-apimock-----" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ng-apimock <a href="https://travis-ci.org/mdasberg/ng-apimock"><img src="https://travis-ci.org/mdasberg/ng-apimock.svg?branch=master" alt="Build Status"></a> <a href="https://github.com/mdasberg/ng-apimock"><img src="https://img.shields.io/node/v/ng-apimock.svg" alt="npm version"></a> <a href="https://david-dm.org/mdasberg/ng-apimock"><img src="https://img.shields.io/david/mdasberg/ng-apimock.svg" alt="dependency Status"></a> <a href="https://david-dm.org/mdasberg/gng-apimock#info=devDependencies"><img src="https://img.shields.io/david/dev/mdasberg/ng-apimock.svg" alt="devDependency Status"></a> <a href="https://www.npmjs.com/package/ng-apimock"><img src="https://img.shields.io/npm/dm/ng-apimock.svg?style=flat-square" alt="npm downloads"></a>
+</h1>
+
+<blockquote>
+<p>Node plugin that provides the ability to use scenario based api mocking:</p>
+
+<ul>
+<li>for local development </li>
+<li>for protractor testing</li>
+</ul>
+</blockquote>
+
+<h4>
+<a id="plugins-that-use-ng-apimock" class="anchor" href="#plugins-that-use-ng-apimock" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Plugins that use ng-apimock</h4>
+
+<ul>
+<li>
+<a href="https://mdasberg.github.io/grunt-ng-apimock">grunt-ng-apimock</a> is a plugin that makes ng-apimock available for <a href="http://gruntjs.com/">Grunt</a>
+</li>
+</ul>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<div class="highlight highlight-source-shell"><pre>npm install ng-apimock --save-dev
+</pre></div>
+
+<p>Once the plugin has been installed, you can require it with this line of JavaScript:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> ngApimock <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>ng-apimock<span class="pl-pds">'</span></span>)();
+</pre></div>
+
+<h2>
+<a id="the-ngapimock-process-mocks" class="anchor" href="#the-ngapimock-process-mocks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The "ngApimock" process mocks</h2>
+
+<h3>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overview</h3>
+
+<p>In order to use the available mocks, you need to call the run function with this line of JavaScript:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">ngApimock</span>.<span class="pl-en">run</span>({
+  <span class="pl-s"><span class="pl-pds">"</span>src<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>test/mocks<span class="pl-pds">"</span></span>, 
+  <span class="pl-s"><span class="pl-pds">"</span>outputPath<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>path/to/outputDir<span class="pl-pds">"</span></span>, 
+  <span class="pl-s"><span class="pl-pds">"</span><span class="pl-en">done</span><span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>() { 
+  <span class="pl-c">// async</span>
+  }
+});
+</pre></div>
+
+<p>The run function will process the mock data provided in the configuration and make it accessible for connect as middleware.</p>
+
+<h3>
+<a id="howto-write-mocks" class="anchor" href="#howto-write-mocks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Howto write mocks</h3>
+
+<p>There are a couple of rules to follow.</p>
+
+<ol>
+<li>For each api call create a separate file</li>
+<li>Each file needs to follow the format below.</li>
+</ol>
+
+<div class="highlight highlight-source-js"><pre>{
+  <span class="pl-s"><span class="pl-pds">"</span>expression<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>your expression here (ie a regex without the leading and trailing '/' or a string)<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>method<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>the http method (ie GET, POST, PUT or DELETE)<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>identifiable name for this service call<span class="pl-pds">"</span></span>  <span class="pl-c">// if non is provided, expression$$method will be used</span>
+  <span class="pl-s"><span class="pl-pds">"</span>isArray<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>indicates if the response data is an array or object<span class="pl-pds">"</span></span>,
+  <span class="pl-s"><span class="pl-pds">"</span>responses<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+    <span class="pl-s"><span class="pl-pds">"</span>some-meaningful-scenario-name<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+      <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>, <span class="pl-c">// if false or not provided this response will not be used as default</span>
+      <span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">200</span>, <span class="pl-c">// optional - defaults to 200</span>
+      <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}, <span class="pl-c">// optional</span>
+      <span class="pl-s"><span class="pl-pds">"</span>headers<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}, <span class="pl-c">// optional - defaults to {}</span>
+      <span class="pl-s"><span class="pl-pds">"</span>statusText<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-c">// optional </span>
+    },
+    <span class="pl-s"><span class="pl-pds">"</span>some-other-meaningful-scenario-name<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+      <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}
+    }
+  }
+}
+</pre></div>
+
+<h2>
+<a id="howto-use-global-variables" class="anchor" href="#howto-use-global-variables" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Howto use global variables</h2>
+
+<p>If for instance, you have date sensitive information in you mocks, mock data is not flexible enough.
+You can use global variables for this. By surrounding a value in the response.data with %%theVariableName%%,
+you can make your data more flexible, like this:</p>
+
+<div class="highlight highlight-source-json"><pre><span class="pl-s"><span class="pl-pds">"</span>responses<span class="pl-pds">"</span></span>: {
+    <span class="pl-s"><span class="pl-pds">"</span>some-meaningful-scenario-name<span class="pl-pds">"</span></span>: {
+        <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: {
+            <span class="pl-s"><span class="pl-pds">"</span>today<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>%%today%%<span class="pl-pds">"</span></span>
+        }
+    }
+}</pre></div>
+
+<p>For local development you can use the web interface to add, change or delete variables.
+For protractor you can use the following commands</p>
+
+<div class="highlight highlight-source-js"><pre>     <span class="pl-smi">ngApimock</span>.<span class="pl-en">setGlobalVariable</span>(name, value); <span class="pl-c">// to add or update</span>
+     <span class="pl-smi">ngApimock</span>.<span class="pl-en">deleteGlobalVariable</span>(name); <span class="pl-c">// to delete </span></pre></div>
+
+<h3>
+<a id="howto-serve-selected-mocks" class="anchor" href="#howto-serve-selected-mocks" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Howto serve selected mocks</h3>
+
+<p>To be able to use the selected mocks you need to do two things:</p>
+
+<ol>
+<li>Add the connect middleware</li>
+<li>Add the mocking interface to your connect configuration</li>
+</ol>
+
+<h4>
+<a id="add-the-connect-middleware" class="anchor" href="#add-the-connect-middleware" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add the connect middleware</h4>
+
+<p>When running connect you can do add the following middleware block to your configuration</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> app <span class="pl-k">=</span> <span class="pl-en">connect</span>();
+<span class="pl-smi">app</span>.<span class="pl-en">use</span>(<span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>ng-apimock/lib/utils<span class="pl-pds">'</span></span>).<span class="pl-smi">ngApimockRequest</span>);
+<span class="pl-smi">app</span>.<span class="pl-en">use</span>(<span class="pl-k">function</span> <span class="pl-en">middleware2</span>(<span class="pl-smi">req</span>, <span class="pl-smi">res</span>, <span class="pl-smi">next</span>) {
+  <span class="pl-c">// middleware 2</span>
+  <span class="pl-en">next</span>();
+});</pre></div>
+
+<h4>
+<a id="add-the-mocking-interface-to-your-connect-configuration" class="anchor" href="#add-the-mocking-interface-to-your-connect-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add the mocking interface to your connect configuration</h4>
+
+<p>When running grunt-contrib-connect you can do add the following staticServe block to your configuration</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> app <span class="pl-k">=</span> <span class="pl-en">connect</span>();
+<span class="pl-smi">app</span>.<span class="pl-en">use</span>(<span class="pl-s"><span class="pl-pds">'</span>/mocking<span class="pl-pds">'</span></span>, <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>serve-static<span class="pl-pds">'</span></span>)(<span class="pl-s"><span class="pl-pds">'</span>path/to/the/generated/mocking/index.html<span class="pl-pds">'</span></span>));
+<span class="pl-smi">app</span>.<span class="pl-en">use</span>(<span class="pl-k">function</span> <span class="pl-en">middleware2</span>(<span class="pl-smi">req</span>, <span class="pl-smi">res</span>, <span class="pl-smi">next</span>) {
+  <span class="pl-c">// middleware 2</span>
+  <span class="pl-en">next</span>();
+});</pre></div>
+
+<h3>
+<a id="howto-use-for-local-development" class="anchor" href="#howto-use-for-local-development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Howto use for local development</h3>
+
+<p>As you have configured both the <a href="#add-the-connect-middleware">connect middleware</a> and the <a href="#add-the-mocking-interface-to-your-connect-configuration">mocking interface</a>, everything 
+  should work out of the box. By default all the responses configured as default, will be returned if the expression matches.</p>
+
+<p>If you would like to change the selected scenario, you can go to http://localhost:9000/mocking and use the interface to change the selected scenario or variables</p>
+
+<p>The interface looks like this:</p>
+
+<p><img src="https://raw.githubusercontent.com/mdasberg/ng-apimock/master/img/web-interface-ng-apimock.png" alt="alt tag"></p>
+
+<h3>
+<a id="howto-use-for-your-protractor-tests" class="anchor" href="#howto-use-for-your-protractor-tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Howto use for your protractor tests.</h3>
+
+<p>As you are building an <a href="https://angularjs.org/">AngularJS</a> application you will probably use <a href="https://angular.github.io/protractor/#/">Protractor</a> for testing your UI.</p>
+
+<p>Protractor provides the ability to inject a mock module in your application by adding the following to your protractor test.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">describe</span>(<span class="pl-s"><span class="pl-pds">'</span>Some test<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-smi">browser</span>.<span class="pl-en">addMockModule</span>(<span class="pl-s"><span class="pl-pds">'</span>modName<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>() {
+        <span class="pl-smi">angular</span>.<span class="pl-en">module</span>(<span class="pl-s"><span class="pl-pds">'</span>modName<span class="pl-pds">'</span></span>, []).<span class="pl-c1">value</span>(<span class="pl-s"><span class="pl-pds">'</span>foo<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>bar<span class="pl-pds">'</span></span>);
+    });
+});</pre></div>
+
+<p>To serve the mock data from the json files that we created for running our application locally with mock data, you can replace the block above with this</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">describe</span>(<span class="pl-s"><span class="pl-pds">'</span>Some test<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-k">var</span> ngApimock <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>.tmp/mocking/protractor.mock<span class="pl-pds">'</span></span>); <span class="pl-c">// or the path/to/protractor.mock.js</span>
+    <span class="pl-smi">ngApimock</span>.<span class="pl-en">selectScenario</span>(<span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>path/to/mocks/some.json<span class="pl-pds">'</span></span>), <span class="pl-s"><span class="pl-pds">'</span>nok<span class="pl-pds">'</span></span>); <span class="pl-c">// nok is the name of the scenario    </span>
+    <span class="pl-smi">ngApimock</span>.<span class="pl-en">selectScenario</span>(<span class="pl-s"><span class="pl-pds">'</span>name attribute in mock.json<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>ok<span class="pl-pds">'</span></span>); <span class="pl-c">// ok is the name of the scenario</span>
+    <span class="pl-smi">ngApimock</span>.<span class="pl-en">setGlobalVariable</span>(<span class="pl-s"><span class="pl-pds">'</span>someKey<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>someValue<span class="pl-pds">'</span></span>); <span class="pl-c">// add or update a global variable which will be used to replace in the response data.</span>
+
+    <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>should do something<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>() {
+        <span class="pl-smi">ngApimock</span>.<span class="pl-en">selectScenario</span>(<span class="pl-s"><span class="pl-pds">'</span>name of some api<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>another<span class="pl-pds">'</span></span>); <span class="pl-c">// at runtime you can change a scenario</span>
+    });
+ });
+</pre></div>
+
+<p>By default all the scenario's marked as default will be returned if the expression matches. So you only need to add ngApimock.selectScenario in case your test need
+other scenario data to be returned.</p>
+
+<p>NgApimock also works when running multiple tests concurrent, by using the protract session id of the test. 
+This ensures that changing a scenario in one test, will not effect another test. </p>
+
+<h3>
+<a id="available-functions" class="anchor" href="#available-functions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Available functions</h3>
+
+<p>All these functions are protractor promises, so they can be chained.</p>
+
+<h4>
+<a id="selectscenariojson-scenarionname" class="anchor" href="#selectscenariojson-scenarionname" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>selectScenario(json, scenarionName)</h4>
+
+<p>Selects the given scenario</p>
+
+<h4>
+<a id="setallscenariostodefault" class="anchor" href="#setallscenariostodefault" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>setAllScenariosToDefault()</h4>
+
+<p>Resets all mocks to the default scenarios</p>
+
+<h4>
+<a id="setallscenariostopassthrough" class="anchor" href="#setallscenariostopassthrough" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>setAllScenariosToPassThrough</h4>
+
+<p>Resets all mocks to use passthroughs</p>
+
+<h4>
+<a id="setglobalvariablekey-value" class="anchor" href="#setglobalvariablekey-value" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>setGlobalVariable(key, value)</h4>
+
+<p>Adds or updates the global key/value pair </p>
+
+<h4>
+<a id="deleteglobalvariablekey" class="anchor" href="#deleteglobalvariablekey" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>deleteGlobalVariable(key)</h4>
+
+<p>Remove the global variable matching the key</p>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
+
+<p>In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code committing.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/mdasberg/ng-apimock">Ng-apimock</a> is maintained by <a href="https://github.com/mdasberg">mdasberg</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
