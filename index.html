@@ -93,9 +93,10 @@
     <span class="pl-s"><span class="pl-pds">"</span>some-meaningful-scenario-name<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
       <span class="pl-s"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>, <span class="pl-c">// if false or not provided this response will not be used as default</span>
       <span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">200</span>, <span class="pl-c">// optional - defaults to 200</span>
-      <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}, <span class="pl-c">// optional</span>
       <span class="pl-s"><span class="pl-pds">"</span>headers<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}, <span class="pl-c">// optional - defaults to {}</span>
-      <span class="pl-s"><span class="pl-pds">"</span>statusText<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-c">// optional </span>
+      <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}, <span class="pl-c">// optional</span>
+      <span class="pl-s"><span class="pl-pds">"</span>file<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>path/to/file.ext<span class="pl-pds">"</span></span> <span class="pl-c">// optional, when provided don't forget the matching content-type header as it will result in a file download instead of data</span>
+      <span class="pl-s"><span class="pl-pds">"</span>statusText<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-c">// optional</span>
     },
     <span class="pl-s"><span class="pl-pds">"</span>some-other-meaningful-scenario-name<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
       <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {}
@@ -233,6 +234,13 @@ This ensures that changing a scenario in one test, will not effect another test.
 <a id="deleteglobalvariablekey" class="anchor" href="#deleteglobalvariablekey" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>deleteGlobalVariable(key)</h4>
 
 <p>Remove the global variable matching the key</p>
+
+<h3>
+<a id="howto-use-recording-functionality" class="anchor" href="#howto-use-recording-functionality" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Howto use recording functionality</h3>
+
+<p>You can record API calls in NgApimock. This is usefull if you have a live API, and want to create mocks for them. 
+You turn on Recording in the header Record (checkbox), and start calling the API. Requests are recorded for each mock. You can zoom in up to Request Response information.
+The response data can be used in mock files, described earlier.</p>
 
 <h2>
 <a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
